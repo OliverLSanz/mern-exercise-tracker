@@ -23,6 +23,16 @@ connection.once('open', () => {
   console.log("MongoDB database connection established succesfully");
 });
 
+// require the routers for MongoDB collections
+const exercisesRouter = require('./routes/exercises');
+const usersRouter = require('./routes/users');
+
+// tell the app to use the routers
+app.use('/exercises', exercisesRouter);
+app.use('/users', usersRouter);
+/* Now, when anyone goes to our-url/exercises, exercisesRouter will load,
+and the same happens for our-url/users and usersRouter */
+
 // start server
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
