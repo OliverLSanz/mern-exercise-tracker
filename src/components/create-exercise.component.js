@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
+import axios from 'axios';
 
 export default class CreateExercise extends Component {
   constructor(props) {
@@ -27,11 +28,15 @@ export default class CreateExercise extends Component {
 
   // this is a lifecicle method. That are methods that react will call at some point
   componentDidMount() {
-    // we hardcode a user until we connect the frontend with the backend
-    this.setState({
-      users: ['tests user'],
-      username: 'test user'
-    })
+    axios.get('http://localhost:5000/users/')
+      .then(response => {
+        if (response.data.length > 0) {
+          this.setState({
+            users: response.data.map(user => user.username),  // that is, the username of each element in the array that the server sends to us whith all the info of each user!
+            username: response.data[0].username
+          })
+        }
+      })
   }
 
   onChangeUsername(e) {
@@ -64,13 +69,19 @@ export default class CreateExercise extends Component {
 
   onSubmit(e) {
     e.preventDefault();  // prevents default html form submit behavior
+    // it is ok to create a variable for use within that function, but you cant
+    // use it elsewhere. We have the state for that
     const exercise = {
       username: this.state.username,
       description: this.state.description,
       duration: this.state.duration,
       date: this.state.date
     }
+
     console.log(exercise);
+
+    axios.post('http://localhost:5000/exercises/add', exercise)
+      .then(res => console.log(res.data));
 
     window.location = '/';
   }
