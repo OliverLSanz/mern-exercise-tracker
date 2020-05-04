@@ -31,7 +31,7 @@ export default class CreateUser extends Component {
     console.log(user);
 
     // we send the user to the backend
-    axios.post('http://localhost:5000/users/add', user)
+    axios.post(process.env.REACT_APP_BACKEND + '/users/add', user)
       .then(res => console.log(res.data));
 
     this.setState({

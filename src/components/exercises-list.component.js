@@ -6,7 +6,7 @@ import axios from 'axios';
 // dont have state nor lifecycle
 // just transforms props to a render
 // props should be passed from other component. A prop can be state or even a
-// method! like props.deleteExercise in this case. 
+// method! like props.deleteExercise in this case.
 const Exercise = props => (
   <tr>
     <td>{props.exercise.username}</td>
@@ -30,7 +30,7 @@ export default class ExercisesList extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/exercises/')
+    axios.get(process.env.REACT_APP_BACKEND + '/exercises/')
       .then(response => {
         this.setState({ exercises: response.data })
       })
@@ -40,7 +40,7 @@ export default class ExercisesList extends Component {
   }
 
   deleteExercise(id) {
-    axios.delete('http://localhost:5000/exercises/'+id)
+    axios.delete(process.env.REACT_APP_BACKEND + '/exercises/'+id)
       .then(res => console.log(res.data));
 
     this.setState({
